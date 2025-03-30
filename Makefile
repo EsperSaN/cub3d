@@ -19,12 +19,21 @@ CFLAGS = -Wall -Wextra -Werror -Wunreachable-code
 #valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --track-fds=yes -s ./$(NAME) maps/valid/subject.cub
 # lib source
 
+UNAME = $(shell uname)
+ifeq ($(UNAME), Linux)
+MLXLINK_FLAG = -ldl -lglfw -pthread -lm
+else ifeq ($(UNAME), Darwin)
+MLXLINK_FLAG = -framework Cocoa -framework OpenGL -framework IOKit -L/opt/homebrew/opt/glfw/lib -lglfw
+else
+MLXLINK_FLAG = -lglfw3 -lopengl32 -lgdi32
+endif
+
 LIB_DIR = ./lib
 LIB_MLX_DIR = $(LIB_DIR)/MLX42
 LIB_FT_DIR = $(LIB_DIR)/libft
 LIB_FILE = $(LIB_FT_DIR)/libft.a \
 		   $(LIB_MLX_DIR)/build/libmlx42.a
-MLXLINK_FLAG = -ldl -lglfw -pthread -lm
+# MLXLINK_FLAG = -ldl -lglfw -pthread -lm
 LIB_LINK = -L$(LIB_FT_DIR) -L$(LIB_MLX_DIR)/build
 
 # manda###################################################################33333
